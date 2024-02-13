@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+stock_location_route_seller,stock_location_route_seller,stock.model_stock_location_route,odoo_marketplace.marketplace_seller_group,1,1,1,1
+stock_warehouse_seller,stock_warehouse_seller,stock.model_stock_warehouse,odoo_marketplace.marketplace_seller_group,1,1,1,1
+stock_location_officer,stock_location_officer,stock.model_stock_location,odoo_marketplace.marketplace_seller_group,1,1,1,0
+stock_picking_type_manager,stock_picking_type_manager,stock.model_stock_picking_type,odoo_marketplace.marketplace_seller_group,1,1,1,1

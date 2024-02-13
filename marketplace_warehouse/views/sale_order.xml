@@ -1,0 +1,20 @@
+<odoo>
+  <data>
+
+        <record id="view_order_form_inherit_sale_order" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit.sale.order</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='pickup_location_id']" position="after">
+                    <field name="warehouse_id"
+                           readonly="1"
+                           string="Product Warehouse"
+                           options="{'no_create': True}"
+                           groups="stock.group_stock_multi_warehouses"
+                           />
+                </xpath>
+            </field>
+        </record>
+  </data>
+</odoo>

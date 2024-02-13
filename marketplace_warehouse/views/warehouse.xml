@@ -1,0 +1,63 @@
+<odoo>
+    <data>
+
+        <record id="view_stock_warehouse_inherit_stock_market_place_custom" model="ir.ui.view">
+            <field name="name">stock.warehouse.form.inherit.marketplace</field>
+            <field name="model">stock.warehouse</field>
+            <field name="inherit_id" ref="stock.view_warehouse"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='code']" position="after">
+                    <field name="country_id"
+                           placeholder="Country"
+                           options="{'no_open': True, 'no_create': True}"
+                    />
+                    <field name="state_id"
+                           placeholder="State"
+                           options="{'no_open': True}"
+                           context="{'country_id': country_id, 'zip': zip}"
+                    />
+                    <field name="city"
+                           placeholder="City"
+                    />
+                    <field name="zip"
+                           placeholder="ZIP"
+                    />
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="marketplace_seller_id"
+                           domain="[('seller', '=', True), ('state', '=', 'approved')]"
+                           options="{'no_create': True}"
+                           context="{'form_view_ref': 'odoo_marketplace.wk_seller_form_view'}"
+                           groups="odoo_marketplace.marketplace_officer_group"
+                    />
+                    <field name="active"/>
+                </xpath>
+                <xpath expr="//field[@name='seller_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_warehouse_form" model="ir.actions.act_window">
+            <field name="name">Warehouses</field>
+            <field name="res_model">stock.warehouse</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="domain">[('marketplace_seller_id','in',['get_marketplace_seller_id()'])]</field>
+            <field name="view_id" ref="stock.view_warehouse_tree"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Define a new warehouse
+                </p>
+            </field>
+        </record>
+
+        <menuitem
+                id="wk_seller_dashboard_menu2_sub_menu9"
+                name="Warehouses"
+                parent="odoo_marketplace.wk_seller_dashboard_menu2"
+                action="marketplace_warehouse.action_warehouse_form"
+                sequence="3"
+        />
+
+    </data>
+</odoo>
