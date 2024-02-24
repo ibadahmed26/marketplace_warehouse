@@ -47,6 +47,16 @@ class SaleOrderLine(models.Model):
             if created_picking.state == 'done':
                 sale_line.write({'marketplace_state': 'sent_to_supplier'})
 
+            sale_order = self.env['sale.order'].browse(sale_line.order_id.id)
+            if sale_order.exists:
+                for picking in sale_order.picking_ids:
+                    picking.update({'location_id': company_warehouse_location.id})
+                    for move in picking.move_lines:
+                        move.update({'warehouse_id': company_warehouse.id})
+                        move.update({'location_id': company_warehouse_location.id})
+                        for move_line in move.move_line_ids:
+                            move_line.update({'location_id': company_warehouse_location.id})
+
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
