@@ -29,6 +29,7 @@
         'views/product_template.xml',
         'views/sale_order.xml',
         'views/warehouse.xml',
+        'wizard/warehouse_wizard.xml',
     ],
 
     'installable': True,

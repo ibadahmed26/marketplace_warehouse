@@ -11,6 +11,17 @@ class SaleOrderLine(models.Model):
                 order_line.order_id.warehouse_id = order_line.product_id.warehouse.id
 
     def action_sent_to_supplier(self):
+        view_id = self.env.ref('marketplace_warehouse.view_warehouse_selection_wizard_form').id
+        return {
+            'name': 'Select Destination Warehouse',
+            'view_mode': 'form',
+            'view_id': view_id,
+            'view_type': 'form',
+            'res_model': 'warehouse.selection.wizard',
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+        }
+
         for sale_line in self:
             operational_user = self.env.user.id
             picking_type = sale_line.warehouse_id.int_type_id

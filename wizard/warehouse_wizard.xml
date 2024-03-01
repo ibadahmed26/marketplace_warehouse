@@ -1,0 +1,19 @@
+<odoo>
+    <data>
+        <record id="view_warehouse_selection_wizard_form" model="ir.ui.view">
+            <field name="name">warehouse.selection.wizard.form</field>
+            <field name="model">warehouse.selection.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Select Nearby Warehouse">
+                    <group>
+                        <field name="warehouse_id"/>
+                    </group>
+                    <footer>
+                        <button name="confirm_action" string="Confirm" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
