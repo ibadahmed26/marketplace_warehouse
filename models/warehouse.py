@@ -14,3 +14,11 @@ class MarketplaceWarehouse(models.Model):
     state_id = fields.Many2one("res.country.state", string='State', required=True)
     city = fields.Char('City')
     zip = fields.Char('Zip')
+    is_company = fields.Boolean(default=False)
+
+    @api.onchange('is_company')
+    def onchange_is_company(self):
+        if self.is_company:
+            self.marketplace_seller_id = False
+        else:
+            self.marketplace_seller_id = self.env['res.partner']

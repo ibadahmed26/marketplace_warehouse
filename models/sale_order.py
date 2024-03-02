@@ -11,62 +11,18 @@ class SaleOrderLine(models.Model):
                 order_line.order_id.warehouse_id = order_line.product_id.warehouse.id
 
     def action_sent_to_supplier(self):
-        view_id = self.env.ref('marketplace_warehouse.view_warehouse_selection_wizard_form').id
-        return {
-            'name': 'Select Destination Warehouse',
-            'view_mode': 'form',
-            'view_id': view_id,
-            'view_type': 'form',
-            'res_model': 'warehouse.selection.wizard',
-            'type': 'ir.actions.act_window',
-            'target': 'new',
-        }
-
         for sale_line in self:
-            operational_user = self.env.user.id
-            picking_type = sale_line.warehouse_id.int_type_id
-            location_id = sale_line.warehouse_id.lot_stock_id
-            company_warehouse = self.env['stock.warehouse'].search([
-                ('company_id', '=', self.env.company.id)], limit=1)
-            seller_id = sale_line.warehouse_id.marketplace_seller_id
-            company_warehouse_location = company_warehouse.lot_stock_id
-
-            picking_vals = {
-                'partner_id': operational_user,
-                'picking_type_id': picking_type.id,
-                'location_id': location_id.id,
-                'location_dest_id': company_warehouse_location.id,
-                'seller_id': seller_id.id,
-                'move_ids_without_package': [],
+            view_id = self.env.ref('marketplace_warehouse.view_warehouse_selection_wizard_form').id
+            return {
+                'name': 'Select Destination Warehouse',
+                'view_mode': 'form',
+                'view_id': view_id,
+                'view_type': 'form',
+                'res_model': 'warehouse.selection.wizard',
+                'type': 'ir.actions.act_window',
+                'target': 'new',
+                'context': {'default_sale_order_line_id': sale_line.id},
             }
-            move_line = {
-                'name': sale_line.product_id.name,
-                'product_id': sale_line.product_id.id,
-                'product_uom_qty': sale_line.product_uom_qty,
-                'product_uom': sale_line.product_id.uom_id.id,
-                'location_id': location_id.id,
-                'location_dest_id': company_warehouse_location.id,
-                'quantity_done': sale_line.product_uom_qty,
-            }
-            picking_vals['move_ids_without_package'].append((0, 0, move_line))
-
-            created_picking = self.env['stock.picking'].create(picking_vals)
-            if created_picking:
-                created_picking.action_confirm()
-                created_picking.button_validate()
-
-            if created_picking.state == 'done':
-                sale_line.write({'marketplace_state': 'sent_to_supplier'})
-
-            sale_order = self.env['sale.order'].browse(sale_line.order_id.id)
-            if sale_order.exists:
-                for picking in sale_order.picking_ids:
-                    picking.update({'location_id': company_warehouse_location.id})
-                    for move in picking.move_lines:
-                        move.update({'warehouse_id': company_warehouse.id})
-                        move.update({'location_id': company_warehouse_location.id})
-                        for move_line in move.move_line_ids:
-                            move_line.update({'location_id': company_warehouse_location.id})
 
 
 class SaleOrder(models.Model):
