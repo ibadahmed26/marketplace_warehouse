@@ -25,7 +25,7 @@
                            placeholder="ZIP"
                     />
                     <field name="is_company"
-                           string="Nearby Company Warehouse"
+                           string="Company Warehouse"
                            groups="odoo_marketplace.marketplace_officer_group"
                     />
                 </xpath>

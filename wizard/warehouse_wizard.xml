@@ -6,7 +6,7 @@
             <field name="arch" type="xml">
                 <form string="Select Nearby Warehouse">
                     <group>
-                        <field name="warehouse_id"/>
+                        <field name="warehouse_id" options="{'no_create': True}"/>
                     </group>
                     <footer>
                         <button name="confirm_action" string="Confirm" type="object" class="btn-primary"/>
